@@ -71,7 +71,7 @@ public class ConsolaUI {
     /**
      * Muestra el menú de gestión de libros
      */
-    private void menuLibros() {
+    public void menuLibros() {
         boolean volver = false;
         
         while (!volver) {
@@ -111,7 +111,7 @@ public class ConsolaUI {
     /**
      * Muestra el menú de búsqueda de libros
      */
-    private void menuBusquedaLibros() {
+    public void menuBusquedaLibros() {
         System.out.println("\n----- Búsqueda de Libros -----");
         System.out.println("1. Buscar por ISBN");
         System.out.println("2. Buscar por Título");
@@ -143,7 +143,7 @@ public class ConsolaUI {
     /**
      * Muestra el menú de gestión de préstamos
      */
-    private void menuPrestamos() {
+    public void menuPrestamos() {
         boolean volver = false;
         
         while (!volver) {
@@ -189,7 +189,7 @@ public class ConsolaUI {
     /**
      * Agrega un nuevo libro al catálogo
      */
-    private void agregarLibro() {
+    public void agregarLibro() {
         System.out.println("\n----- Agregar Libro -----");
         System.out.print("ISBN: ");
         String isbn = scanner.nextLine();
@@ -219,7 +219,7 @@ public class ConsolaUI {
     /**
      * Busca un libro por su ISBN
      */
-    private void buscarPorIsbn() {
+    public void buscarPorIsbn() {
         System.out.println("\n----- Buscar por ISBN -----");
         System.out.print("ISBN: ");
         String isbn = scanner.nextLine();
@@ -236,7 +236,7 @@ public class ConsolaUI {
     /**
      * Busca libros por título
      */
-    private void buscarPorTitulo() {
+    public void buscarPorTitulo() {
         System.out.println("\n----- Buscar por Título -----");
         System.out.print("Título: ");
         String titulo = scanner.nextLine();
@@ -257,7 +257,7 @@ public class ConsolaUI {
     /**
      * Busca libros por autor
      */
-    private void buscarPorAutor() {
+    public void buscarPorAutor() {
         System.out.println("\n----- Buscar por Autor -----");
         System.out.print("Autor: ");
         String autor = scanner.nextLine();
@@ -278,7 +278,7 @@ public class ConsolaUI {
     /**
      * Muestra todos los libros del catálogo
      */
-    private void mostrarTodosLosLibros() {
+    public void mostrarTodosLosLibros() {
         List<Libro> libros = catalogo.obtenerTodosLosLibros();
         
         if (!libros.isEmpty()) {
@@ -295,7 +295,7 @@ public class ConsolaUI {
     /**
      * Elimina un libro del catálogo
      */
-    private void eliminarLibro() {
+    public void eliminarLibro() {
         System.out.println("\n----- Eliminar Libro -----");
         System.out.print("ISBN del libro a eliminar: ");
         String isbn = scanner.nextLine();
@@ -324,7 +324,7 @@ public class ConsolaUI {
     /**
      * Muestra los detalles de un libro
      */
-    private void mostrarDetallesLibro(Libro libro) {
+    public void mostrarDetallesLibro(Libro libro) {
         System.out.println("ISBN: " + libro.getIsbn());
         System.out.println("Título: " + libro.getTitulo());
         System.out.println("Autor: " + libro.getAutor());
@@ -336,7 +336,7 @@ public class ConsolaUI {
     /**
      * Realiza un préstamo de un libro
      */
-    private void realizarPrestamo() {
+    public void realizarPrestamo() {
         System.out.println("\n----- Realizar Préstamo -----");
         System.out.print("ISBN del libro: ");
         String isbn = scanner.nextLine();
@@ -375,7 +375,7 @@ public class ConsolaUI {
     /**
      * Devuelve un libro prestado
      */
-    private void devolverLibro() {
+    public void devolverLibro() {
         System.out.println("\n----- Devolver Libro -----");
         System.out.print("ISBN del libro: ");
         String isbn = scanner.nextLine();
@@ -404,7 +404,7 @@ public class ConsolaUI {
     /**
      * Extiende la duración de un préstamo
      */
-    private void extenderPrestamo() {
+    public void extenderPrestamo() {
         System.out.println("\n----- Extender Préstamo -----");
         System.out.print("ISBN del libro: ");
         String isbn = scanner.nextLine();
@@ -429,7 +429,7 @@ public class ConsolaUI {
     /**
      * Muestra los préstamos activos
      */
-    private void mostrarPrestamosActivos() {
+    public void mostrarPrestamosActivos() {
         List<Prestamo> prestamos = sistemaPrestamos.obtenerPrestamosActivos();
         
         if (!prestamos.isEmpty()) {
@@ -446,7 +446,7 @@ public class ConsolaUI {
     /**
      * Muestra los préstamos vencidos
      */
-    private void mostrarPrestamosVencidos() {
+    public void mostrarPrestamosVencidos() {
         List<Prestamo> prestamos = sistemaPrestamos.obtenerPrestamosVencidos();
         
         if (!prestamos.isEmpty()) {
@@ -463,7 +463,7 @@ public class ConsolaUI {
     /**
      * Muestra los detalles de un préstamo
      */
-    private void mostrarDetallesPrestamo(Prestamo prestamo) {
+    public void mostrarDetallesPrestamo(Prestamo prestamo) {
         Libro libro = prestamo.getLibro();
         System.out.println("Libro: " + libro.getTitulo() + " (" + libro.getIsbn() + ")");
         System.out.println("Autor: " + libro.getAutor());
@@ -481,7 +481,7 @@ public class ConsolaUI {
     /**
      * Muestra las estadísticas del sistema
      */
-    private void mostrarEstadisticas() {
+    public void mostrarEstadisticas() {
         System.out.println("\n----- Estadísticas -----");
         System.out.println("Total de libros: " + catalogo.contarLibros());
         System.out.println("Libros disponibles: " + catalogo.contarLibrosDisponibles());
@@ -493,7 +493,7 @@ public class ConsolaUI {
     /**
      * Obtiene un entero del usuario
      */
-    private int obtenerEntero() {
+    public int obtenerEntero() {
         try {
             return Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
