@@ -19,102 +19,180 @@ class CatalogoTest {
         catalogo = new Catalogo();
         
         // Crear algunos libros para las pruebas
-        libro1 = new Libro("978-3-16-148410-0", "Clean Code", "Robert C. Martin");
-        libro2 = new Libro("978-0-13-235088-4", "Clean Architecture", "Robert C. Martin");
-        libro3 = new Libro("978-0-321-12521-5", "Design Patterns", "Erich Gamma");
-        
-        // Agregar los libros al catálogo
-        catalogo.agregarLibro(libro1);
-        catalogo.agregarLibro(libro2);
-        catalogo.agregarLibro(libro3);
+        libro1 = new Libro("978-0-306-40615-7", "Clean Code", "Robert C. Martin", "Programación");
+        libro2 = new Libro("978-0-132-35088-4", "Design Patterns", "Erich Gamma", "Programación");
+        libro3 = new Libro("978-1-449-33737-8", "Effective Java", "Joshua Bloch", "Java");
+    }
+    
+    @Test
+    void testConstructor() {
+        // Verificar que el catálogo se inicializa vacío
+        assertEquals(0, catalogo.obtenerCantidadLibros());
+        assertTrue(catalogo.obtenerLibros().isEmpty());
     }
     
     @Test
     void testAgregarLibro() {
-        // Arrange
-        Libro nuevoLibro = new Libro("978-1-449-37319-9", "Effective Java", "Joshua Bloch");
+        // Agregar un libro al catálogo
+        catalogo.agregarLibro(libro1);
         
-        // Act
-        boolean resultado = catalogo.agregarLibro(nuevoLibro);
+        // Verificar que se agregó correctamente
+        assertEquals(1, catalogo.obtenerCantidadLibros());
+        assertTrue(catalogo.obtenerLibros().contains(libro1));
         
-        // Assert
-        assertTrue(resultado);
-        assertEquals(4, catalogo.contarLibros());
-        assertNotNull(catalogo.buscarPorIsbn("978-1-449-37319-9"));
+        // Agregar otro libro
+        catalogo.agregarLibro(libro2);
+        assertEquals(2, catalogo.obtenerCantidadLibros());
+        assertTrue(catalogo.obtenerLibros().contains(libro2));
+        
+        // Intentar agregar un libro null no debería modificar el catálogo
+        catalogo.agregarLibro(null);
+        assertEquals(2, catalogo.obtenerCantidadLibros());
     }
     
     @Test
-    void testAgregarLibroNulo() {
-        // Act
-        boolean resultado = catalogo.agregarLibro(null);
+    void testBuscarLibroPorISBN() {
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
         
-        // Assert
-        assertFalse(resultado);
-        assertEquals(3, catalogo.contarLibros());
+        // Buscar un libro existente por ISBN
+        Libro libroEncontrado = catalogo.buscarLibroPorISBN(libro1.getIsbn());
+        assertNotNull(libroEncontrado);
+        assertEquals(libro1.getIsbn(), libroEncontrado.getIsbn());
+        
+        // Buscar un libro que no existe
+        Libro libroNoEncontrado = catalogo.buscarLibroPorISBN("ISBN-NO-EXISTENTE");
+        assertNull(libroNoEncontrado);
+        
+        // Buscar con ISBN null o vacío
+        assertNull(catalogo.buscarLibroPorISBN(null));
+        assertNull(catalogo.buscarLibroPorISBN(""));
     }
     
     @Test
-    void testAgregarLibroDuplicado() {
-        // Arrange
-        Libro libroDuplicado = new Libro("978-3-16-148410-0", "Otro Título", "Otro Autor");
+    void testBuscarLibrosPorAutor() {
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        catalogo.agregarLibro(libro3);
         
-        // Act
-        boolean resultado = catalogo.agregarLibro(libroDuplicado);
+        // Buscar libros por autor existente
+        List<Libro> librosMartin = catalogo.buscarLibrosPorAutor("Robert C. Martin");
+        assertEquals(1, librosMartin.size());
+        assertTrue(librosMartin.contains(libro1));
         
-        // Assert
-        assertFalse(resultado);
-        assertEquals(3, catalogo.contarLibros());
+        // Buscar con un autor que tiene múltiples libros
+        // Agregamos otro libro del mismo autor
+        Libro libro4 = new Libro("978-0-132-35089-1", "Clean Architecture", "Robert C. Martin", "Programación");
+        catalogo.agregarLibro(libro4);
+        
+        List<Libro> librosMartin2 = catalogo.buscarLibrosPorAutor("Robert C. Martin");
+        assertEquals(2, librosMartin2.size());
+        assertTrue(librosMartin2.contains(libro1));
+        assertTrue(librosMartin2.contains(libro4));
+        
+        // Buscar con un autor que no tiene libros
+        List<Libro> librosNoExistente = catalogo.buscarLibrosPorAutor("Autor No Existente");
+        assertTrue(librosNoExistente.isEmpty());
+        
+        // Buscar con autor null o vacío
+        assertTrue(catalogo.buscarLibrosPorAutor(null).isEmpty());
+        assertTrue(catalogo.buscarLibrosPorAutor("").isEmpty());
     }
     
     @Test
-    void testBuscarPorIsbn() {
-        // Act
-        Libro encontrado = catalogo.buscarPorIsbn("978-3-16-148410-0");
+    void testBuscarLibrosPorTitulo() {
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        catalogo.agregarLibro(libro3);
         
-        // Assert
-        assertNotNull(encontrado);
-        assertEquals("Clean Code", encontrado.getTitulo());
-        assertEquals("Robert C. Martin", encontrado.getAutor());
+        // Buscar libros por título existente
+        List<Libro> librosClean = catalogo.buscarLibrosPorTitulo("Clean Code");
+        assertEquals(1, librosClean.size());
+        assertTrue(librosClean.contains(libro1));
+        
+        // Buscar con un título parcial
+        List<Libro> librosJava = catalogo.buscarLibrosPorTitulo("Java");
+        assertEquals(1, librosJava.size());
+        assertTrue(librosJava.contains(libro3));
+        
+        // Buscar título que no existe
+        List<Libro> librosNoExistente = catalogo.buscarLibrosPorTitulo("Título No Existente");
+        assertTrue(librosNoExistente.isEmpty());
+        
+        // Buscar con título null o vacío
+        assertTrue(catalogo.buscarLibrosPorTitulo(null).isEmpty());
+        assertTrue(catalogo.buscarLibrosPorTitulo("").isEmpty());
     }
     
     @Test
-    void testBuscarPorIsbnNoExistente() {
-        // Act
-        Libro encontrado = catalogo.buscarPorIsbn("isbn-no-existente");
+    void testEliminarLibro() {
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        assertEquals(2, catalogo.obtenerCantidadLibros());
         
-        // Assert
-        assertNull(encontrado);
+        // Eliminar un libro existente
+        boolean eliminado = catalogo.eliminarLibro(libro1);
+        assertTrue(eliminado);
+        assertEquals(1, catalogo.obtenerCantidadLibros());
+        assertFalse(catalogo.obtenerLibros().contains(libro1));
+        assertTrue(catalogo.obtenerLibros().contains(libro2));
+        
+        // Intentar eliminar un libro que no está en el catálogo
+        boolean noEliminado = catalogo.eliminarLibro(libro3);
+        assertFalse(noEliminado);
+        assertEquals(1, catalogo.obtenerCantidadLibros());
+        
+        // Intentar eliminar null
+        assertFalse(catalogo.eliminarLibro(null));
     }
     
     @Test
-    void testBuscarPorIsbnNulo() {
-        // Act & Assert
-        assertNull(catalogo.buscarPorIsbn(null));
-        assertNull(catalogo.buscarPorIsbn(""));
-        assertNull(catalogo.buscarPorIsbn("   "));
-    }
-    
-    @Test
-    void testObtenerTodosLosLibros() {
-        // Act
-        List<Libro> todos = catalogo.obtenerTodosLosLibros();
+    void testEliminarLibroPorISBN() {
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        assertEquals(2, catalogo.obtenerCantidadLibros());
         
-        // Assert
-        assertEquals(3, todos.size());
-        assertTrue(todos.contains(libro1));
-        assertTrue(todos.contains(libro2));
-        assertTrue(todos.contains(libro3));
+        // Eliminar un libro existente por ISBN
+        boolean eliminado = catalogo.eliminarLibroPorISBN(libro1.getIsbn());
+        assertTrue(eliminado);
+        assertEquals(1, catalogo.obtenerCantidadLibros());
+        assertNull(catalogo.buscarLibroPorISBN(libro1.getIsbn()));
+        assertNotNull(catalogo.buscarLibroPorISBN(libro2.getIsbn()));
+        
+        // Intentar eliminar un libro con ISBN que no existe
+        boolean noEliminado = catalogo.eliminarLibroPorISBN("ISBN-NO-EXISTENTE");
+        assertFalse(noEliminado);
+        assertEquals(1, catalogo.obtenerCantidadLibros());
+        
+        // Intentar eliminar con ISBN null o vacío
+        assertFalse(catalogo.eliminarLibroPorISBN(null));
+        assertFalse(catalogo.eliminarLibroPorISBN(""));
     }
     
     @Test
     void testObtenerLibrosDisponibles() {
-        // Arrange
-        libro1.cambiarEstado(Estado.PRESTADO);
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        catalogo.agregarLibro(libro3);
         
-        // Act
+        // Inicialmente todos los libros deberían estar disponibles
         List<Libro> disponibles = catalogo.obtenerLibrosDisponibles();
+        assertEquals(3, disponibles.size());
+        assertTrue(disponibles.contains(libro1));
+        assertTrue(disponibles.contains(libro2));
+        assertTrue(disponibles.contains(libro3));
         
-        // Assert
+        // Cambiar el estado de un libro a PRESTADO
+        libro1.prestar();
+        
+        // Ahora solo dos libros deberían estar disponibles
+        disponibles = catalogo.obtenerLibrosDisponibles();
         assertEquals(2, disponibles.size());
         assertFalse(disponibles.contains(libro1));
         assertTrue(disponibles.contains(libro2));
@@ -123,14 +201,21 @@ class CatalogoTest {
     
     @Test
     void testObtenerLibrosPrestados() {
-        // Arrange
-        libro1.cambiarEstado(Estado.PRESTADO);
-        libro3.cambiarEstado(Estado.PRESTADO);
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        catalogo.agregarLibro(libro3);
         
-        // Act
+        // Inicialmente no debería haber libros prestados
         List<Libro> prestados = catalogo.obtenerLibrosPrestados();
+        assertTrue(prestados.isEmpty());
         
-        // Assert
+        // Cambiar el estado de dos libros a PRESTADO
+        libro1.prestar();
+        libro3.prestar();
+        
+        // Ahora debería haber dos libros prestados
+        prestados = catalogo.obtenerLibrosPrestados();
         assertEquals(2, prestados.size());
         assertTrue(prestados.contains(libro1));
         assertFalse(prestados.contains(libro2));
@@ -138,82 +223,44 @@ class CatalogoTest {
     }
     
     @Test
-    void testEliminarLibro() {
-        // Act
-        boolean resultado = catalogo.eliminarLibro("978-3-16-148410-0");
+    void testObtenerCantidadLibrosDisponibles() {
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        catalogo.agregarLibro(libro3);
         
-        // Assert
-        assertTrue(resultado);
-        assertEquals(2, catalogo.contarLibros());
-        assertNull(catalogo.buscarPorIsbn("978-3-16-148410-0"));
+        // Inicialmente todos los libros deberían estar disponibles
+        assertEquals(3, catalogo.obtenerCantidadLibrosDisponibles());
+        
+        // Cambiar el estado de dos libros a PRESTADO
+        libro1.prestar();
+        libro3.prestar();
+        
+        // Ahora solo un libro debería estar disponible
+        assertEquals(1, catalogo.obtenerCantidadLibrosDisponibles());
     }
     
     @Test
-    void testEliminarLibroNoExistente() {
-        // Act
-        boolean resultado = catalogo.eliminarLibro("isbn-no-existente");
+    void testObtenerCantidadLibrosPrestados() {
+        // Agregar libros al catálogo
+        catalogo.agregarLibro(libro1);
+        catalogo.agregarLibro(libro2);
+        catalogo.agregarLibro(libro3);
         
-        // Assert
-        assertFalse(resultado);
-        assertEquals(3, catalogo.contarLibros());
-    }
-    
-    @Test
-    void testBuscarPorAutor() {
-        // Act
-        List<Libro> porAutor = catalogo.buscarPorAutor("Martin");
+        // Inicialmente no debería haber libros prestados
+        assertEquals(0, catalogo.obtenerCantidadLibrosPrestados());
         
-        // Assert
-        assertEquals(2, porAutor.size());
-        assertTrue(porAutor.contains(libro1));
-        assertTrue(porAutor.contains(libro2));
-        assertFalse(porAutor.contains(libro3));
-    }
-    
-    @Test
-    void testBuscarPorAutorNoExistente() {
-        // Act
-        List<Libro> porAutor = catalogo.buscarPorAutor("Autor Inexistente");
+        // Cambiar el estado de dos libros a PRESTADO
+        libro1.prestar();
+        libro3.prestar();
         
-        // Assert
-        assertTrue(porAutor.isEmpty());
-    }
-    
-    @Test
-    void testBuscarPorTitulo() {
-        // Act
-        List<Libro> porTitulo = catalogo.buscarPorTitulo("Clean");
+        // Ahora debería haber dos libros prestados
+        assertEquals(2, catalogo.obtenerCantidadLibrosPrestados());
         
-        // Assert
-        assertEquals(2, porTitulo.size());
-        assertTrue(porTitulo.contains(libro1));
-        assertTrue(porTitulo.contains(libro2));
-        assertFalse(porTitulo.contains(libro3));
-    }
-    
-    @Test
-    void testContarLibros() {
-        // Assert
-        assertEquals(3, catalogo.contarLibros());
+        // Devolver un libro
+        libro1.devolver();
         
-        // Act
-        catalogo.eliminarLibro(libro1.getIsbn());
-        
-        // Assert
-        assertEquals(2, catalogo.contarLibros());
-    }
-    
-    @Test
-    void testContarLibrosDisponiblesYPrestados() {
-        // Arrange
-        assertEquals(3, catalogo.contarLibrosDisponibles());
-        assertEquals(0, catalogo.contarLibrosPrestados());
-        
-        // Act
-        libro1.cambiarEstado(Estado.PRESTADO);
-        
-        // Assert
-        assertEquals(2, catalogo.contarLibrosDisponibles());
-        assertEquals(1, catalogo.contarLibrosPrestados());
+        // Ahora debería haber un libro prestado
+        assertEquals(1, catalogo.obtenerCantidadLibrosPrestados());
     }
 } 
