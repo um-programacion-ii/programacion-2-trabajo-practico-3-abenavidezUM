@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/jpLeSJQi)
 # Sistema de Gestión de Biblioteca - Práctica de Testing
 
 ![Java](https://img.shields.io/badge/Java-21-orange)
@@ -10,11 +11,83 @@
 - **Recomendación:** Se sugiere leer la consigna completa antes de comenzar con el desarrollo para tener una visión general del proyecto y planificar adecuadamente el trabajo.
 
 ## Identificación del Alumno
-- **Nombre:** [Nombre del Alumno]
-- **Apellido:** [Apellido del Alumno]
-- **Legajo:** [Número de Legajo]
+- **Nombre:** Agustin
+- **Apellido:** Benavidez
+- **Legajo:** 62344
 
 ## Importante
+- La rama `main` está protegida y no se pueden hacer commits directos sobre ella
+- Todo el trabajo debe realizarse en ramas feature siguiendo el patrón `feature/issue-numero-descripcion`
+- Los cambios deben ser enviados mediante Pull Requests
+- Cada Pull Request debe estar asociado a un Issue específico
+
+### Descripción del Proyecto
+Este proyecto implementa un sistema de gestión de biblioteca con las siguientes características:
+- Gestión de libros y catálogo
+- Sistema de préstamos
+- Gestión de usuarios
+- Notificaciones
+- Procesamiento concurrente
+
+### Estructura del Proyecto
+El proyecto está organizado en los siguientes paquetes:
+- `ar.edu.um.biblioteca.modelo`: Clases de modelo (Libro, Catalogo, Prestamo, Usuario)
+- `ar.edu.um.biblioteca.sistema`: Clases del sistema (SistemaPrestamos, GestionUsuarios)
+- `ar.edu.um.biblioteca.notificacion`: Sistema de notificaciones (Notificador, implementaciones)
+- `ar.edu.um.biblioteca.concurrencia`: Procesamiento concurrente
+
+### Cómo Ejecutar el Proyecto
+1. Clonar el repositorio
+2. Abrir el proyecto con un IDE compatible con Maven
+3. Ejecutar `mvn clean install` para compilar y ejecutar las pruebas
+4. Para ejecutar la demostración, correr la clase `Main`
+
+### Cómo Usar el Sistema
+El sistema permite:
+- Agregar libros al catálogo
+- Registrar usuarios
+- Realizar préstamos de libros
+- Devolver libros
+- Monitorear préstamos vencidos
+
+Para probar las funcionalidades básicas, ejecutar la clase `Main` que contiene una demostración del sistema.
+
+### Componentes Implementados
+
+#### Milestone 1: Configuración y Pruebas Básicas
+- Clase `Libro` con sus atributos y métodos
+- Pruebas unitarias para la clase Libro
+
+#### Milestone 2: Catálogo
+- Clase `Catalogo` para gestionar libros
+- Pruebas unitarias para búsqueda y gestión de libros
+
+#### Milestone 3: Sistema de Préstamos
+- Clase `Prestamo` para representar préstamos
+- Clase `SistemaPrestamos` para gestionar préstamos
+- Pruebas con mocks para el sistema de préstamos
+
+#### Milestone 4: Sistema de Usuarios
+- Clase `Usuario` para representar usuarios
+- Clase `GestionUsuarios` para gestionar usuarios
+- Pruebas con múltiples mocks
+
+#### Sistema de Notificaciones
+- Interfaz `Notificador` para abstraer el sistema de notificaciones
+- Implementaciones para consola y archivo
+- Pruebas unitarias para las notificaciones
+
+#### Concurrencia
+- Clase `ProcesadorPrestamos` que utiliza concurrencia básica
+- Control de recursos compartidos mediante sincronización
+
+## Enunciado Original
+
+### Tiempo Estimado y Recomendaciones
+- **Tiempo estimado de realización:** 15 horas
+- **Recomendación:** Se sugiere leer la consigna completa antes de comenzar con el desarrollo para tener una visión general del proyecto y planificar adecuadamente el trabajo.
+
+### Importante
 - La rama `main` está protegida y no se pueden hacer commits directos sobre ella
 - Todo el trabajo debe realizarse en ramas feature siguiendo el patrón `feature/issue-numero-descripcion`
 - Los cambios deben ser enviados mediante Pull Requests
